@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+<TextView
+	android:text="Roommate Helper"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:gravity="center_horizontal"
+	android:textSize="30sp"></TextView>
+	<EditText
+		android:text="Login"
+		android:id="@+id/login_field"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"></EditText>
+	<EditText
+		android:text=""
+		android:id="@+id/password_field"
+		android:password="true"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"></EditText>
+<Button
+	android:text="Log in"
+	android:id="@+id/login_button"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	></Button>
+</LinearLayout>
