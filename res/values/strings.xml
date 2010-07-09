@@ -6,4 +6,9 @@
     <string name="login_form_submit">Log In</string>
     <string name="login_form_need_acnt">Need an account?</string>
     <string name="login_form_signup">Sign Up</string>
+    
+    <string name="actionpicker_title">Choose an Action</string>
+    
+    <string name="note_title">Notes</string>
+    <string name="note_content">sample note...</string>
 </resources>

@@ -12,7 +12,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActionPicker"
-                  android:label="@string/app_name">
+                  android:label="@string/actionpicker_title">
+        </activity>
+        <activity android:name=".NoteEditor"
+                  android:label="@string/note_title">
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="8" />
