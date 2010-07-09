@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
-//import android.widget.Button;
+import android.widget.Button;
 
 public class RoommateHelper extends Activity implements OnClickListener {
     /** Called when the activity is first created. */
@@ -14,7 +14,7 @@ public class RoommateHelper extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        View button = findViewById(R.id.login_form_submit);
+        View button = (Button)findViewById(R.id.login_form_submit);
         button.setOnClickListener(this);
     }
     

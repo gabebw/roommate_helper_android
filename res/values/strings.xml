@@ -8,6 +8,8 @@
     <string name="login_form_signup">Sign Up</string>
     
     <string name="actionpicker_title">Choose an Action</string>
+    <string name="actionpicker_button_size">120sp</string>
+    <string name="actionpicker_button_margin">10sp</string>
     
     <string name="note_title">Notes</string>
     <string name="note_content">sample note...</string>
