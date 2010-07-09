@@ -14,7 +14,7 @@ public class RoommateHelper extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        View button = findViewById(R.id.login_button);
+        View button = findViewById(R.id.login_form_submit);
         button.setOnClickListener(this);
     }
     

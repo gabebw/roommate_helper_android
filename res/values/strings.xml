@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="hello">Hello World, RoommateHelper!</string>
-    <string name="app_name">RooommateHelper</string>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="app_name">Roommate Helper</string>
+    <string name="login_form_email">email</string>
+    <string name="login_form_password">password</string>
+    <string name="login_form_submit">Log In</string>
+    <string name="login_form_need_acnt">Need an account?</string>
+    <string name="login_form_signup">Sign Up</string>
 </resources>
