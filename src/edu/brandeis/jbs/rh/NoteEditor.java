@@ -33,6 +33,12 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 
 public class NoteEditor extends Activity {
@@ -53,7 +59,9 @@ public class NoteEditor extends Activity {
         DownloadNoteTask dnt = new DownloadNoteTask();
         try {
         	dnt.execute(url);
-        	content.setText(dnt.get());
+        	Document dom = dnt.get();
+        	String text = dom.getElementsByTagName("text").item(0).getTextContent();
+        	content.setText(text);
         } catch (Exception ex) {
         	ex.printStackTrace();
         }
@@ -86,8 +94,8 @@ public class NoteEditor extends Activity {
         return sb.toString();
     }
     
-    private class DownloadNoteTask extends AsyncTask<String, Integer, String> {    	
-        protected String doInBackground(String... urls) {
+    private class DownloadNoteTask extends AsyncTask<String, Integer, Document> {    	
+        protected Document doInBackground(String... urls) {
         	// Set up http client and cookie store
         	BasicHttpContext context = new BasicHttpContext();
         	context.setAttribute(ClientContext.COOKIE_STORE, new BasicCookieStore());
@@ -130,7 +138,6 @@ public class NoteEditor extends Activity {
         		client.execute(login, context);
         	} catch (IOException ex) {
         		ex.printStackTrace();
-        		return "<could not log in>";
         	}
         	
         	/*
@@ -159,16 +166,24 @@ public class NoteEditor extends Activity {
             	HttpEntity entity = resp.getEntity();
              	if (entity != null) {
              		InputStream instream = entity.getContent();
-             		return convertStreamToString(instream);
-             	} else {
-             		return "<null>";
+             		try {
+						DocumentBuilder dombuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+						Document dom = dombuilder.parse(instream);
+						return dom;
+					} catch (ParserConfigurationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SAXException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
              	}
             } catch (IOException ex) {
              	ex.printStackTrace();
-             	return "<could not connect>";
             } finally {
             	client.close();
             }
+            return null;
         }
     }
 }
