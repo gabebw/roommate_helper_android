@@ -4,23 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask;
+/*
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+*/
 import android.widget.EditText;
 import android.net.http.AndroidHttpClient;
-import android.net.Uri;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,7 +31,6 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -101,27 +99,12 @@ public class NoteEditor extends Activity {
         	context.setAttribute(ClientContext.COOKIE_STORE, new BasicCookieStore());
         	AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
         	
-        	/*
-        	DefaultHttpClient defclient = new DefaultHttpClient();
-        	HttpGet get = new HttpGet("https://roommate-helper.heroku.com");
-        	try {
-        		defclient.execute(get);
-        	} catch (Exception ex) {
-        		ex.printStackTrace();
-        	}
-        	*/
-        	 
         	// log in (create a new user session)
         	//HttpHost host = new HttpHost("https://roommate-helper.heroku.com");
         	HttpPost login = new HttpPost("https://roommate-helper.heroku.com/user_sessions");
         	BasicHttpParams params = new BasicHttpParams();
         	String email = "singingwolfboy@gmail.com";
             String password = "secure";
-            /*
-        	params.setParameter("user_session[email]", email);
-        	params.setParameter("user_session[password]", password);
-        	login.setParams(params);
-        	*/
         	
             // TERRIBLE COPY-PASTED CODE
         	try {
@@ -139,23 +122,7 @@ public class NoteEditor extends Activity {
         	} catch (IOException ex) {
         		ex.printStackTrace();
         	}
-        	
-        	/*
-        	// as a test, get the home page
-        	HttpGet homepage = new HttpGet("https://roommate-helper.heroku.com");
-        	try {
-        		HttpResponse resp = client.execute(homepage, context);
-        		HttpEntity entity = resp.getEntity();
-             	if (entity != null) {
-             		InputStream instream = entity.getContent();
-             		return convertStreamToString(instream);
-             	}
-        	} catch (IOException ex) {
-        		ex.printStackTrace();
-        	}
-        	*/
-        	
-             
+        	 
         	// set up a request object for the passed in URL
             HttpGet req = new HttpGet(urls[0]);
             req.addHeader("Accept", "text/xml");
