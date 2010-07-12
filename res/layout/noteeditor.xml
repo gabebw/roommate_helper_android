@@ -32,10 +32,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/note_content"
             android:layout_width="wrap_content"
-            android:id="@+id/TextView01"
+            android:id="@+id/note_title"
             android:text="Note Title"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"></TextView>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/note_title"
+            android:layout_width="wrap_content"
+            android:id="@+id/note_last_edit"
+            android:text="last edited at XX:XX by Joe Schmoe"
+            android:layout_alignParentLeft="true"></TextView>
     </RelativeLayout>
 
 </RelativeLayout>
