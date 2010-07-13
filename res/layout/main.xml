@@ -11,15 +11,17 @@
         android:gravity="center"
         android:textSize="30sp" />
     <EditText
-        android:text="@string/login_form_email"
+        android:hint="@string/login_form_email"
         android:id="@+id/login_form_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
     <EditText
-        android:text="@string/login_form_password"
+        android:hint="@string/login_form_password"
         android:id="@+id/login_form_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:password="true" />
     <Button
         android:text="@string/login_form_submit"
