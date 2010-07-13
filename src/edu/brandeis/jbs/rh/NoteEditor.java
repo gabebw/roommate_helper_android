@@ -178,7 +178,7 @@ public class NoteEditor extends Activity implements OnClickListener {
 			String newText = editText.getText().toString();
 
 			HttpPut whiteboardPut = new HttpPut(
-					"https://roommate-helper.heroku.com/households/822834891/whiteboard");
+					"https://roommate-helper.heroku.com/whiteboard");
 			try {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				nvps.add(new BasicNameValuePair("whiteboard[text]", newText));
