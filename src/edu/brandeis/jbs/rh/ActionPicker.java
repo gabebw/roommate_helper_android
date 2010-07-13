@@ -33,6 +33,7 @@ public class ActionPicker extends Activity implements OnClickListener {
     	case R.id.notes_button:
     		Intent i = new Intent(ActionPicker.this, NoteEditor.class);
     		startActivity(i);
+    		break;
     	case R.id.logout_button:
     		settings = getSharedPreferences(RoommateHelper.PREFS_FILE, MODE_PRIVATE);
     		SharedPreferences.Editor editor = settings.edit();
@@ -41,6 +42,7 @@ public class ActionPicker extends Activity implements OnClickListener {
     		editor.commit();
     		
     		this.finish();
+    		break;
     	}
     }
 }
