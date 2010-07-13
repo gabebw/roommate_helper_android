@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".NoteEditor"
-            android:label="@string/note_title">
+            android:label="@string/whiteboard_title">
         </activity>
     </application>
     <uses-sdk
