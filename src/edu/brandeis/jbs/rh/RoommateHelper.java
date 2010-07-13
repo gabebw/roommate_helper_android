@@ -23,12 +23,17 @@ public class RoommateHelper extends Activity implements OnClickListener {
         setContentView(R.layout.main);
         
         settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+        // Start ActionPicker activity right away if email and password exist.
+        if( settings.getString("email", "").length() > 0 &&
+        	settings.getString("password", "").length() > 0){
+        	startActionPicker();
+        } else {
+        	emailText = (EditText) findViewById(R.id.login_form_email);
+        	passwordText = (EditText) findViewById(R.id.login_form_password);
         
-        emailText = (EditText) findViewById(R.id.login_form_email);
-        passwordText = (EditText) findViewById(R.id.login_form_password);
-        
-        loginButton = (Button)findViewById(R.id.login_form_submit);
-        loginButton.setOnClickListener(this);
+        	loginButton = (Button)findViewById(R.id.login_form_submit);
+        	loginButton.setOnClickListener(this);
+        }
     }
     
     public void onClick(View view) {
@@ -37,7 +42,10 @@ public class RoommateHelper extends Activity implements OnClickListener {
     	editor.putString("email", emailText.getText().toString());
     	editor.putString("password", passwordText.getText().toString());
     	editor.commit();
-    	
+    	startActionPicker();
+    }
+    
+    public void startActionPicker(){
     	Intent i = new Intent(RoommateHelper.this, ActionPicker.class);
     	startActivity(i);
     }
