@@ -15,38 +15,38 @@ public class RoommateHelper extends Activity implements OnClickListener {
 	private EditText passwordText;
 	private SharedPreferences settings;
 	public static final String PREFS_FILE = "rh.settings";
-	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        // Start ActionPicker activity right away if email and password exist.
-        if( settings.getString("email", "").length() > 0 &&
-        	settings.getString("password", "").length() > 0){
-        	startActionPicker();
-        } else {
-        	emailText = (EditText) findViewById(R.id.login_form_email);
-        	passwordText = (EditText) findViewById(R.id.login_form_password);
-        
-        	loginButton = (Button)findViewById(R.id.login_form_submit);
-        	loginButton.setOnClickListener(this);
-        }
-    }
-    
-    public void onClick(View view) {
-    	// Save email and password to shared preferences
-    	SharedPreferences.Editor editor = settings.edit();
-    	editor.putString("email", emailText.getText().toString());
-    	editor.putString("password", passwordText.getText().toString());
-    	editor.commit();
-    	startActionPicker();
-    }
-    
-    public void startActionPicker(){
-    	Intent i = new Intent(RoommateHelper.this, ActionPicker.class);
-    	startActivity(i);
-    }
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+		// Start ActionPicker activity right away if email and password exist.
+		if (settings.getString("email", "").length() > 0
+				&& settings.getString("password", "").length() > 0) {
+			startActionPicker();
+		}
+		emailText = (EditText) findViewById(R.id.login_form_email);
+		passwordText = (EditText) findViewById(R.id.login_form_password);
+
+		loginButton = (Button) findViewById(R.id.login_form_submit);
+		loginButton.setOnClickListener(this);
+
+	}
+
+	public void onClick(View view) {
+		// Save email and password to shared preferences
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("email", emailText.getText().toString());
+		editor.putString("password", passwordText.getText().toString());
+		editor.commit();
+		startActionPicker();
+	}
+
+	public void startActionPicker() {
+		Intent i = new Intent(RoommateHelper.this, ActionPicker.class);
+		startActivity(i);
+	}
 }

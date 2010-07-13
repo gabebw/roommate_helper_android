@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_gravity="center"
-    android:layout_height="wrap_content">
-    <TableRow>
-        <Button
-            android:text="Contract"
-            android:id="@+id/contract_button"
-            android:layout_width="120sp"
-            android:layout_height="120sp"
-            android:layout_margin="10sp" />
-        <Button
-            android:text="@string/whiteboard_label"
-            android:id="@+id/notes_button"
-            android:layout_width="120sp"
-            android:layout_height="120sp"
-            android:layout_margin="10sp" />
-    </TableRow>
-    <TableRow>
-        <Button
-            android:text="@string/roommates_label"
-            android:id="@+id/roommates_button"
-            android:layout_width="120sp"
-            android:layout_height="120sp"
-            android:layout_margin="10sp" />
-        <Button
-            android:text="@string/calendar_label"
-            android:id="@+id/calendar_button"
-            android:layout_width="120sp"
-            android:layout_height="120sp"
-            android:layout_margin="10sp" />
-    </TableRow>
-</TableLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/RelativeLayout01"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/logout_button"
+        layout="@layout/logout_button" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <TableRow>
+            <Button
+                android:text="@string/contract_label"
+                android:id="@+id/contract_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+            <Button
+                android:text="@string/whiteboard_label"
+                android:id="@+id/notes_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:text="@string/roommates_label"
+                android:id="@+id/roommates_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+            <Button
+                android:text="@string/calendar_label"
+                android:id="@+id/calendar_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>
