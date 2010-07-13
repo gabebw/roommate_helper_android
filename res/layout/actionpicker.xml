@@ -12,7 +12,7 @@
             android:layout_height="120sp"
             android:layout_margin="10sp" />
         <Button
-            android:text="Notes"
+            android:text="@string/whiteboard_label"
             android:id="@+id/notes_button"
             android:layout_width="120sp"
             android:layout_height="120sp"
@@ -20,13 +20,13 @@
     </TableRow>
     <TableRow>
         <Button
-            android:text="Roommates"
+            android:text="@string/roommates_label"
             android:id="@+id/roommates_button"
             android:layout_width="120sp"
             android:layout_height="120sp"
             android:layout_margin="10sp" />
         <Button
-            android:text="Calendar"
+            android:text="@string/calendar_label"
             android:id="@+id/calendar_button"
             android:layout_width="120sp"
             android:layout_height="120sp"

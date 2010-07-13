@@ -1,13 +1,12 @@
 package edu.brandeis.jbs.rh;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.view.View;
@@ -34,16 +33,27 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import edu.brandeis.jbs.rh.RoommateHelper;
+
 public class NoteEditor extends Activity implements OnClickListener {
 	private Button saveButton;
 	private EditText editText;
 	private BasicHttpContext context;
+	private String email;
+	private String password;
+	private SharedPreferences settings;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.noteeditor);
+		
+        settings = getSharedPreferences(RoommateHelper.PREFS_FILE, MODE_PRIVATE);
+		
+		// Get user email and password
+		email = settings.getString("email", "");
+		password = settings.getString("password", "");
 
 		// Set up HTTP client and cookie store
 		context = new BasicHttpContext();
@@ -61,7 +71,7 @@ public class NoteEditor extends Activity implements OnClickListener {
 		// this is just for testing purposes
 		String url = "https://roommate-helper.heroku.com/whiteboard";
 
-		DownloadNoteTask dnt = new DownloadNoteTask(url, context);
+		DownloadNoteTask dnt = new DownloadNoteTask(url, context, email, password);
 		try {
 			dnt.execute();
 			Document dom = dnt.get();
@@ -86,10 +96,14 @@ public class NoteEditor extends Activity implements OnClickListener {
 	private class DownloadNoteTask extends AsyncTask<Void, Void, Document> {
 		private String url;
 		private BasicHttpContext context;
+		private String email;
+		private String password;
 
-		public DownloadNoteTask(String url, BasicHttpContext context) {
+		public DownloadNoteTask(String url, BasicHttpContext context, String email, String password) {
 			this.url = url;
 			this.context = context;
+			this.email = email;
+			this.password = password;
 		}
 
 		protected Document doInBackground(Void... v) {
@@ -98,8 +112,8 @@ public class NoteEditor extends Activity implements OnClickListener {
 			// log in (create a new user session)
 			HttpPost login = new HttpPost(
 					"https://roommate-helper.heroku.com/user_sessions");
-			String email = "singingwolfboy@gmail.com";
-			String password = "secure";
+			//String email = "singingwolfboy@gmail.com";
+			//String password = "secure";
 
 			// TERRIBLE COPY-PASTED CODE
 			try {
