@@ -55,11 +55,11 @@ public class NoteEditor extends Activity implements OnClickListener {
 		saveButton.setOnClickListener(this);
 	}
 
-	public void onStart() {
-		super.onStart();
+	public void onResume() {
+		super.onResume();
 
 		// this is just for testing purposes
-		String url = "https://roommate-helper.heroku.com/households/822834891/whiteboard";
+		String url = "https://roommate-helper.heroku.com/whiteboard";
 
 		DownloadNoteTask dnt = new DownloadNoteTask(url, context);
 		try {
