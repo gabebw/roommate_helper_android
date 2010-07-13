@@ -42,6 +42,10 @@ public class RoommateHelper extends Activity implements OnClickListener {
 		editor.putString("email", emailText.getText().toString());
 		editor.putString("password", passwordText.getText().toString());
 		editor.commit();
+		
+		// Clear edit text fields so email and password aren't visible after logout
+		emailText.setText("");
+		passwordText.setText("");
 		startActionPicker();
 	}
 
