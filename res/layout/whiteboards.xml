@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content">
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
 	<TextView
 		android:text="@string/select_a_whiteboard_label"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"></TextView>
 	<LinearLayout
 		android:id="@+id/whiteboards_layout"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
-		<!-- filled by Whiteboards activity  -->
-		</LinearLayout>
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_weight="1">
+		<!-- Will be filled by Whiteboards activity  -->
+	</LinearLayout>
 </LinearLayout>

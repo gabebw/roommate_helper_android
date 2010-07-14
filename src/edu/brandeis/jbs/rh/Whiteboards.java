@@ -23,18 +23,23 @@ import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 
 public class Whiteboards extends Activity {
-	public static final String WHITEBOARDS_XML_URL = "http://roommate-helper.heroku.com/whiteboards.xml";
+	public static final String WHITEBOARDS_XML_URL = "https://roommate-helper.heroku.com/whiteboards.xml";
 
+	private LinearLayout whiteboardsLayout;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whiteboards);	
+		setContentView(R.layout.whiteboards);
+		whiteboardsLayout = (LinearLayout) findViewById(R.id.whiteboards_layout);
 	}
 	
 	public void onResume() {
@@ -45,19 +50,31 @@ public class Whiteboards extends Activity {
 			Document dom = dwb.get();
 			NodeList whiteboardNodes = dom.getElementsByTagName("whiteboard");
 			int numWhiteboards = whiteboardNodes.getLength();
+			
+			/*
+			 * For each whiteboard, insert a TextView containing the whiteboard's name
+			 * into the layout inside whiteboards.xml
+			 */
+			
+			LinearLayout.LayoutParams tlp = new LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT );
 			for( int i = 0; i < numWhiteboards; i++ ){
 				Node whiteboard = whiteboardNodes.item(i);
 				NodeList whiteboardChildNodes = whiteboard.getChildNodes();
-				/*
-				 * Order of nodes: (yes, kind of ugly)
-				 * id
-				 * name
-				 * created_at
-				 * updated_at
-				 */
-				String whiteboardName = whiteboardChildNodes.item(1).getTextContent();
+				String whiteboardName = "";
+				// Loop through each tag inside <whiteboard> until we get to <name>
+				for( int j = 0; j < whiteboardChildNodes.getLength(); j++){
+					String nodeName = whiteboardChildNodes.item(j).getNodeName();
+					if( nodeName.equals("name") ){
+						whiteboardName = whiteboardChildNodes.item(j).getTextContent();
+						break;
+					}
+				}
+				// Create a TextView with the whiteboard name and add it to the layout inside whiteboards.xml
 				TextView textView = new TextView(this);
 				textView.setText(whiteboardName);
+				textView.setLayoutParams(tlp);
+				whiteboardsLayout.addView(textView);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -72,7 +89,7 @@ public class Whiteboards extends Activity {
 		}
 		
 		protected Document doInBackground(Void... v) {
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
 			BasicHttpContext context = new BasicHttpContext();
 			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 			
