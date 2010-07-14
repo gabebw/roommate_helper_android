@@ -9,12 +9,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+// For PREFS_FILE
+import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
+
 public class RoommateHelper extends Activity implements OnClickListener {
 	private Button loginButton;
 	private EditText emailText;
 	private EditText passwordText;
 	private SharedPreferences settings;
-	public static final String PREFS_FILE = "rh.settings";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -22,7 +24,7 @@ public class RoommateHelper extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+		settings = getSharedPreferences(RoommateHelperHttpClient.PREFS_FILE, MODE_PRIVATE);
 		// Start ActionPicker activity right away if email and password exist.
 		if (settings.getString("email", "").length() > 0
 				&& settings.getString("password", "").length() > 0) {

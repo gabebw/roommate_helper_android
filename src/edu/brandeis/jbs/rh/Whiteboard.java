@@ -33,17 +33,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import edu.brandeis.jbs.rh.RoommateHelper;
+import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 
 public class Whiteboard extends Activity implements OnClickListener {
 	private Button saveButton;
 	private EditText editText;
 	private BasicHttpContext context;
-	private String email;
-	private String password;
-	private SharedPreferences settings;
 	
 	private String whiteboardUrl;
+	
+	private RoommateHelperHttpClient rhClient;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -51,11 +50,9 @@ public class Whiteboard extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whiteboard);
 		
-        settings = getSharedPreferences(RoommateHelper.PREFS_FILE, MODE_PRIVATE);
+		rhClient = new RoommateHelperHttpClient();
 		
-		// Get user email and password
-		email = settings.getString("email", "");
-		password = settings.getString("password", "");
+		context = rhClient.login();
 		
 		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/1";
 
@@ -72,7 +69,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 
-		DownloadNoteTask dnt = new DownloadNoteTask(whiteboardUrl, context, email, password);
+		DownloadNoteTask dnt = new DownloadNoteTask(whiteboardUrl, context);
 		try {
 			dnt.execute();
 			Document dom = dnt.get();
@@ -88,7 +85,6 @@ public class Whiteboard extends Activity implements OnClickListener {
 		try {
 			unt.execute();
 			String x = unt.get();
-			System.out.println(x);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -97,38 +93,14 @@ public class Whiteboard extends Activity implements OnClickListener {
 	private class DownloadNoteTask extends AsyncTask<Void, Void, Document> {
 		private String url;
 		private BasicHttpContext context;
-		private String email;
-		private String password;
 
-		public DownloadNoteTask(String url, BasicHttpContext context, String email, String password) {
+		public DownloadNoteTask(String url, BasicHttpContext context) {
 			this.url = url;
 			this.context = context;
-			this.email = email;
-			this.password = password;
 		}
 
 		protected Document doInBackground(Void... v) {
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-
-			// log in (create a new user session)
-			HttpPost login = new HttpPost(
-					"https://roommate-helper.heroku.com/user_sessions");
-
-			// TERRIBLE COPY-PASTED CODE
-			try {
-				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-				nvps.add(new BasicNameValuePair("user_session[email]", email));
-				nvps.add(new BasicNameValuePair("user_session[password]", password));
-				login.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			} // END OF COPY-PASTE
-
-			try {
-				client.execute(login, context);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
 
 			// set up a request object for the passed in URL
 			HttpGet req = new HttpGet(this.url + ".xml");
@@ -141,8 +113,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 				if (entity != null) {
 					InputStream instream = entity.getContent();
 					try {
-						DocumentBuilder dombuilder = DocumentBuilderFactory
-								.newInstance().newDocumentBuilder();
+						DocumentBuilder dombuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 						Document dom = dombuilder.parse(instream);
 						return dom;
 					} catch (ParserConfigurationException e) {
@@ -181,8 +152,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 			try {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				nvps.add(new BasicNameValuePair("whiteboard[text]", newText));
-				whiteboardPut.setEntity(new UrlEncodedFormEntity(nvps,
-						HTTP.UTF_8));
+				whiteboardPut.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
