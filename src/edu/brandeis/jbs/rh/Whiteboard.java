@@ -42,6 +42,8 @@ public class Whiteboard extends Activity implements OnClickListener {
 	private String email;
 	private String password;
 	private SharedPreferences settings;
+	
+	private String whiteboardUrl;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,6 +56,8 @@ public class Whiteboard extends Activity implements OnClickListener {
 		// Get user email and password
 		email = settings.getString("email", "");
 		password = settings.getString("password", "");
+		
+		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/1";
 
 		// Set up HTTP client and cookie store
 		context = new BasicHttpContext();
@@ -68,9 +72,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 
-		String url = "https://roommate-helper.heroku.com/whiteboard";
-
-		DownloadNoteTask dnt = new DownloadNoteTask(url, context, email, password);
+		DownloadNoteTask dnt = new DownloadNoteTask(whiteboardUrl, context, email, password);
 		try {
 			dnt.execute();
 			Document dom = dnt.get();
@@ -82,7 +84,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View v) {
-		UpdateNoteTask unt = new UpdateNoteTask(editText, context);
+		UpdateNoteTask unt = new UpdateNoteTask(whiteboardUrl, editText, context);
 		try {
 			unt.execute();
 			String x = unt.get();
@@ -111,8 +113,6 @@ public class Whiteboard extends Activity implements OnClickListener {
 			// log in (create a new user session)
 			HttpPost login = new HttpPost(
 					"https://roommate-helper.heroku.com/user_sessions");
-			//String email = "singingwolfboy@gmail.com";
-			//String password = "secure";
 
 			// TERRIBLE COPY-PASTED CODE
 			try {
@@ -131,7 +131,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 			}
 
 			// set up a request object for the passed in URL
-			HttpGet req = new HttpGet(this.url);
+			HttpGet req = new HttpGet(this.url + ".xml");
 			req.addHeader("Accept", "text/xml");
 
 			try {
@@ -163,21 +163,21 @@ public class Whiteboard extends Activity implements OnClickListener {
 	}
 
 	private class UpdateNoteTask extends AsyncTask<Void, Void, String> {
+		private String whiteboardUrl;
 		private EditText editText;
 		private BasicHttpContext context;
 
-		public UpdateNoteTask(EditText editText, BasicHttpContext context) {
+		public UpdateNoteTask(String whiteboardUrl, EditText editText, BasicHttpContext context) {
+			this.whiteboardUrl = whiteboardUrl;
 			this.editText = editText;
 			this.context = context;
 		}
 
 		protected String doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-			client.close();
 			String newText = editText.getText().toString();
 
-			HttpPut whiteboardPut = new HttpPut(
-					"https://roommate-helper.heroku.com/whiteboard");
+			HttpPut whiteboardPut = new HttpPut(whiteboardUrl);
 			try {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				nvps.add(new BasicNameValuePair("whiteboard[text]", newText));
