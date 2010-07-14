@@ -19,7 +19,7 @@ public class ActionPicker extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actionpicker);
         
-        View button = (Button)findViewById(R.id.notes_button);
+        View button = (Button)findViewById(R.id.whiteboard_button);
         button.setOnClickListener(this);
         
         View logout_button = (Button)findViewById(R.id.logout_button);
@@ -28,7 +28,7 @@ public class ActionPicker extends Activity implements OnClickListener {
     
     public void onClick(View view) {
     	switch(view.getId()) {
-    	case R.id.notes_button:
+    	case R.id.whiteboard_button:
     		Intent i = new Intent(ActionPicker.this, Whiteboard.class);
     		startActivity(i);
     		break;

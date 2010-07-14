@@ -24,7 +24,7 @@
                 android:layout_margin="10sp" />
             <Button
                 android:text="@string/whiteboard_label"
-                android:id="@+id/notes_button"
+                android:id="@+id/whiteboard_button"
                 android:layout_width="120sp"
                 android:layout_height="120sp"
                 android:layout_margin="10sp" />
