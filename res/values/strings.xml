@@ -10,15 +10,17 @@
     <string name="actionpicker_title">Choose an Action</string>
     <string name="actionpicker_button_size">120sp</string>
     <string name="actionpicker_button_margin">10sp</string>
-    <string name="whiteboard_label">Whiteboard</string>
+    <string name="actionpicker_whiteboards_label">Whiteboards</string>
     <string name="roommates_label">Roommates</string>
     <string name="calendar_label">Calendar</string>
     <string name="contract_label">Contract</string>
     
-    <string name="whiteboards_label">Select a whiteboard</string>
+    <string name="select_a_whiteboard_label">Select a whiteboard</string>
     
-    <string name="whiteboard_content">sample note...</string>
-    <string name="whiteboard_title">Default Whiteboard</string>
+    <string name="whiteboards_title">Whiteboards</string>
+    
+    <string name="default_whiteboard_content">sample note...</string>
+    <string name="default_whiteboard_title">Default Whiteboard</string>
     <string name="save_whiteboard_label">Save</string>
     
     <string name="logout_label">Log Out</string>

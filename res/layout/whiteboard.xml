@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <EditText
-        android:text="@string/whiteboard_content"
+        android:text="@string/default_whiteboard_content"
         android:id="@+id/whiteboard_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/RelativeLayout01"
+        android:layout_above="@id/RelativeLayout01"
         android:gravity="top"
         android:textSize="15sp" />
 
@@ -21,25 +21,15 @@
         android:layout_width="wrap_content">
         <Button
             android:layout_height="wrap_content"
-            android:layout_below="@+id/whiteboard_content"
+            android:layout_below="@id/whiteboard_content"
             android:id="@+id/save_whiteboard_button"
             android:layout_width="wrap_content"
             android:textSize="20dip"
             android:text="@string/save_whiteboard_label"
             android:layout_alignParentRight="true"></Button>
 
-
         <TextView
             android:layout_height="wrap_content"
-            android:layout_below="@+id/whiteboard_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/whiteboard_title"
-            android:text="@string/whiteboard_title"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"></TextView>
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/whiteboard_title"
             android:layout_width="wrap_content"
             android:id="@+id/whiteboard_last_edited"
             android:text="last edited at XX:XX by Joe Schmoe"

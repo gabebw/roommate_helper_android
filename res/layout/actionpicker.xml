@@ -23,8 +23,8 @@
                 android:layout_height="120sp"
                 android:layout_margin="10sp" />
             <Button
-                android:text="@string/whiteboard_label"
-                android:id="@+id/whiteboard_button"
+                android:text="@string/actionpicker_whiteboards_label"
+                android:id="@+id/actionpicker_whiteboards_button"
                 android:layout_width="120sp"
                 android:layout_height="120sp"
                 android:layout_margin="10sp" />
