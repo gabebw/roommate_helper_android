@@ -11,8 +11,6 @@ import android.widget.Button;
 import edu.brandeis.jbs.rh.RoommateHelper;
 
 public class ActionPicker extends Activity implements OnClickListener {
-	private String email;
-	private String password;
 	private SharedPreferences settings;
 	
     /** Called when the activity is first created. */

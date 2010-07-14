@@ -23,7 +23,7 @@
             android:label="@string/actionpicker_title">
         </activity>
         <activity
-            android:name=".NoteEditor"
+            android:name=".Whiteboard"
             android:label="@string/whiteboard_title">
         </activity>
     </application>

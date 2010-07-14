@@ -15,7 +15,7 @@
     <string name="calendar_label">Calendar</string>
     <string name="contract_label">Contract</string>
     
-    <string name="note_content">sample note...</string>
+    <string name="whiteboard_content">sample note...</string>
     <string name="whiteboard_title">Default Whiteboard</string>
     <string name="save_whiteboard_label">Save</string>
     

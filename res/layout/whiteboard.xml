@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <EditText
-        android:text="@string/note_content"
-        android:id="@+id/note_content"
+        android:text="@string/whiteboard_content"
+        android:id="@+id/whiteboard_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/RelativeLayout01"
@@ -16,12 +16,12 @@
 
     <RelativeLayout
         android:layout_height="wrap_content"
-        android:id="@+id/RelativeLayout01"
         android:layout_alignParentBottom="true"
+        android:id="@+id/RelativeLayout01"
         android:layout_width="wrap_content">
         <Button
             android:layout_height="wrap_content"
-            android:layout_below="@+id/note_content"
+            android:layout_below="@+id/whiteboard_content"
             android:id="@+id/save_whiteboard_button"
             android:layout_width="wrap_content"
             android:textSize="20dip"
@@ -31,17 +31,17 @@
 
         <TextView
             android:layout_height="wrap_content"
-            android:layout_below="@+id/note_content"
+            android:layout_below="@+id/whiteboard_content"
             android:layout_width="wrap_content"
-            android:id="@+id/note_title"
+            android:id="@+id/whiteboard_title"
             android:text="@string/whiteboard_title"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"></TextView>
         <TextView
             android:layout_height="wrap_content"
-            android:layout_below="@+id/note_title"
+            android:layout_below="@+id/whiteboard_title"
             android:layout_width="wrap_content"
-            android:id="@+id/note_last_edit"
+            android:id="@+id/whiteboard_last_edited"
             android:text="last edited at XX:XX by Joe Schmoe"
             android:layout_alignParentLeft="true"></TextView>
     </RelativeLayout>

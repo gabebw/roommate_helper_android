@@ -35,7 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import edu.brandeis.jbs.rh.RoommateHelper;
 
-public class NoteEditor extends Activity implements OnClickListener {
+public class Whiteboard extends Activity implements OnClickListener {
 	private Button saveButton;
 	private EditText editText;
 	private BasicHttpContext context;
@@ -47,7 +47,7 @@ public class NoteEditor extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.noteeditor);
+		setContentView(R.layout.whiteboard);
 		
         settings = getSharedPreferences(RoommateHelper.PREFS_FILE, MODE_PRIVATE);
 		
@@ -59,7 +59,7 @@ public class NoteEditor extends Activity implements OnClickListener {
 		context = new BasicHttpContext();
 		context.setAttribute(ClientContext.COOKIE_STORE, new BasicCookieStore());
 
-		editText = (EditText) findViewById(R.id.note_content);
+		editText = (EditText) findViewById(R.id.whiteboard_content);
 
 		saveButton = (Button) findViewById(R.id.save_whiteboard_button);
 		saveButton.setOnClickListener(this);
@@ -68,7 +68,6 @@ public class NoteEditor extends Activity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 
-		// this is just for testing purposes
 		String url = "https://roommate-helper.heroku.com/whiteboard";
 
 		DownloadNoteTask dnt = new DownloadNoteTask(url, context, email, password);
@@ -174,7 +173,7 @@ public class NoteEditor extends Activity implements OnClickListener {
 
 		protected String doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-
+			client.close();
 			String newText = editText.getText().toString();
 
 			HttpPut whiteboardPut = new HttpPut(
