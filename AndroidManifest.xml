@@ -23,8 +23,12 @@
             android:label="@string/actionpicker_title">
         </activity>
         <activity
+            android:name=".Whiteboards"
+            android:label="@string/whiteboards_title">
+        </activity>
+        <activity
             android:name=".Whiteboard"
-            android:label="@string/whiteboard_title">
+            android:label="@string/default_whiteboard_title">
         </activity>
     </application>
     <uses-sdk
