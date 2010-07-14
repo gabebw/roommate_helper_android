@@ -9,7 +9,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.protocol.BasicHttpContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -22,6 +24,8 @@ import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 
 public class Whiteboards extends Activity {
 	public static final String WHITEBOARDS_XML_URL = "http://roommate-helper.heroku.com/whiteboards.xml";
@@ -61,15 +65,17 @@ public class Whiteboards extends Activity {
 	}
 
 	private class DownloadWhiteboardsTask extends AsyncTask<Void, Void, Document> {
-		private BasicHttpContext context;
+		private CookieStore cookieStore;
 		public DownloadWhiteboardsTask(Context whiteboardsContext){
 			RoommateHelperHttpClient rhClient = new RoommateHelperHttpClient(whiteboardsContext);
-			this.context = rhClient.login();
+			cookieStore = rhClient.login();
 		}
 		
 		protected Document doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-
+			BasicHttpContext context = new BasicHttpContext();
+			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+			
 			// set up a request object for the passed in URL
 			HttpGet req = new HttpGet(WHITEBOARDS_XML_URL);
 			req.addHeader("Accept", "text/xml");

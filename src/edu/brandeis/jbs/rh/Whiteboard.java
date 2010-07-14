@@ -16,6 +16,7 @@ import android.net.http.AndroidHttpClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
@@ -36,7 +37,7 @@ import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 public class Whiteboard extends Activity implements OnClickListener {
 	private Button saveButton;
 	private EditText editText;
-	private BasicHttpContext context;
+	private CookieStore cookieStore;
 	
 	private String whiteboardUrl;
 	
@@ -50,13 +51,9 @@ public class Whiteboard extends Activity implements OnClickListener {
 		
 		rhClient = new RoommateHelperHttpClient(this);
 		
-		context = rhClient.login();
+		cookieStore = rhClient.login();
 		
 		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/1";
-
-		// Set up HTTP client and cookie store
-		context = new BasicHttpContext();
-		context.setAttribute(ClientContext.COOKIE_STORE, new BasicCookieStore());
 
 		editText = (EditText) findViewById(R.id.whiteboard_content);
 
@@ -67,7 +64,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 
-		DownloadNoteTask dnt = new DownloadNoteTask(whiteboardUrl, context);
+		DownloadNoteTask dnt = new DownloadNoteTask(whiteboardUrl);
 		try {
 			dnt.execute();
 			Document dom = dnt.get();
@@ -79,7 +76,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View v) {
-		UpdateNoteTask unt = new UpdateNoteTask(whiteboardUrl, editText, context);
+		UpdateNoteTask unt = new UpdateNoteTask(whiteboardUrl, editText, cookieStore);
 		try {
 			unt.execute();
 			String x = unt.get();
@@ -90,16 +87,16 @@ public class Whiteboard extends Activity implements OnClickListener {
 
 	private class DownloadNoteTask extends AsyncTask<Void, Void, Document> {
 		private String url;
-		private BasicHttpContext context;
 
-		public DownloadNoteTask(String url, BasicHttpContext context) {
+		public DownloadNoteTask(String url) {
 			this.url = url;
-			this.context = context;
 		}
 
 		protected Document doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
-
+			BasicHttpContext context = new BasicHttpContext();
+			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+			
 			// set up a request object for the passed in URL
 			HttpGet req = new HttpGet(this.url + ".xml");
 			req.addHeader("Accept", "text/xml");
@@ -134,16 +131,19 @@ public class Whiteboard extends Activity implements OnClickListener {
 	private class UpdateNoteTask extends AsyncTask<Void, Void, String> {
 		private String whiteboardUrl;
 		private EditText editText;
-		private BasicHttpContext context;
+		private CookieStore cookieStore;
 
-		public UpdateNoteTask(String whiteboardUrl, EditText editText, BasicHttpContext context) {
+		public UpdateNoteTask(String whiteboardUrl, EditText editText, CookieStore cookieStore) {
 			this.whiteboardUrl = whiteboardUrl;
 			this.editText = editText;
-			this.context = context;
+			this.cookieStore = cookieStore;
 		}
 
 		protected String doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
+			BasicHttpContext context = new BasicHttpContext();
+			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+
 			String newText = editText.getText().toString();
 
 			HttpPut whiteboardPut = new HttpPut(whiteboardUrl);
