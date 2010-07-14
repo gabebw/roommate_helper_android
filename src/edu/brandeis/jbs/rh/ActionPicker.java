@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import edu.brandeis.jbs.rh.RoommateHelper;
-
 public class ActionPicker extends Activity implements OnClickListener {
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
@@ -34,7 +32,7 @@ public class ActionPicker extends Activity implements OnClickListener {
     		startActivity(i);
     		break;
     	case R.id.logout_button:
-    		settings = getSharedPreferences(RoommateHelper.PREFS_FILE, MODE_PRIVATE);
+    		settings = getSharedPreferences(RoommateHelperHttpClient.PREFS_FILE, MODE_PRIVATE);
     		SharedPreferences.Editor editor = settings.edit();
     		editor.remove("email");
     		editor.remove("password");
