@@ -31,7 +31,7 @@ public class ActionPicker extends Activity implements OnClickListener {
     public void onClick(View view) {
     	switch(view.getId()) {
     	case R.id.notes_button:
-    		Intent i = new Intent(ActionPicker.this, NoteEditor.class);
+    		Intent i = new Intent(ActionPicker.this, Whiteboard.class);
     		startActivity(i);
     		break;
     	case R.id.logout_button:
