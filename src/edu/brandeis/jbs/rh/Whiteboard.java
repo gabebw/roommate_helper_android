@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.view.View;
@@ -19,7 +18,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.message.BasicNameValuePair;
@@ -50,7 +48,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whiteboard);
 		
-		rhClient = new RoommateHelperHttpClient();
+		rhClient = new RoommateHelperHttpClient(this);
 		
 		context = rhClient.login();
 		
@@ -145,7 +143,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 		}
 
 		protected String doInBackground(Void... v) {
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
 			String newText = editText.getText().toString();
 
 			HttpPut whiteboardPut = new HttpPut(whiteboardUrl);
