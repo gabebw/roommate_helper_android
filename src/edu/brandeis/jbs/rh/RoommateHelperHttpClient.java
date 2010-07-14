@@ -10,13 +10,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
+import org.w3c.dom.Document;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
 
-public class RoommateHelperHttpClient extends Activity {
-	private BasicHttpContext context;
+public class RoommateHelperHttpClient {
+	private BasicHttpContext httpContext;
 	private SharedPreferences settings;
 	private String email;
 	private String password;
@@ -32,48 +35,68 @@ public class RoommateHelperHttpClient extends Activity {
 	public RoommateHelperHttpClient(String email, String password){
 		this.email = email;
 		this.password = password;
+		httpContext = new BasicHttpContext();
 	}
 	
 	/**
 	 * Grabs user's email and password from SharedPreferences.
+	 * Must provide a Context (can use this since Activity extends Context)
+	 * so that we can use getSharedPreferences().
 	 */
-	public RoommateHelperHttpClient(){
-		settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+	public RoommateHelperHttpClient(Context context){
+		settings = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 
 		// Get user email and password
 		email = settings.getString("email", "");
 		password = settings.getString("password", "");
+		httpContext = new BasicHttpContext();
+	}
+	
+	public BasicHttpContext login(){
+		LoginTask loginTask = new LoginTask();//email, password);
+		try {
+			loginTask.execute();
+			httpContext = loginTask.get();
+			return httpContext;
+		} catch(Exception ex){
+			ex.printStackTrace();
+			return null;
+		}
 	}
 
-	/**
-	 * Create new user session using provided email and password.
-	 * @param email
-	 * @param password
-	 * @return BasicHttpContext The BasicHttpContext that stores the cookies returned by logging in.
-	 */
-	public BasicHttpContext login() {
-		AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
-		// log in (create a new user session)
-		HttpPost login = new HttpPost(LOGIN_URL);
+	private class LoginTask extends AsyncTask<Void, Void, BasicHttpContext> {
+		/**
+		 * Create new user session using provided email and password.
+		 * 
+		 * @param email
+		 * @param password
+		 * @return BasicHttpContext The BasicHttpContext that stores the cookies
+		 *         returned by logging in.
+		 */
+		public BasicHttpContext doInBackground(Void... v) {
+			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
+			// log in (create a new user session)
+			HttpPost login = new HttpPost(LOGIN_URL);
 
-		// TERRIBLE COPY-PASTED CODE
-		try {
-			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-			nvps.add(new BasicNameValuePair("user_session[email]", email));
-			nvps.add(new BasicNameValuePair("user_session[password]", password));
-			login.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} // END OF COPY-PASTE
+			// TERRIBLE COPY-PASTED CODE
+			try {
+				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+				nvps.add(new BasicNameValuePair("user_session[email]", email));
+				nvps.add(new BasicNameValuePair("user_session[password]", password));
+				login.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} // END OF COPY-PASTE
 
-		try {
-			client.execute(login, context);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			client.close();
+			try {
+				client.execute(login, httpContext);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			} finally {
+				client.close();
+			}
+			return httpContext;
 		}
-		return context;
 	}
 	
 	/**
@@ -81,6 +104,6 @@ public class RoommateHelperHttpClient extends Activity {
 	 * @return BasicHttpContext context
 	 */
 	public BasicHttpContext getContext(){
-		return context;
+		return httpContext;
 	}
 }
