@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.net.http.AndroidHttpClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -37,6 +38,8 @@ import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 public class Whiteboard extends Activity implements OnClickListener {
 	private Button saveButton;
 	private EditText editText;
+	private TextView lastUpdatedText;
+	
 	private CookieStore cookieStore;
 	
 	private String whiteboardUrl;
@@ -49,7 +52,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		/*
 		 * The Whiteboards (plural) activity places the whiteboard id inside
-		 * a Bundle inside the Intent extras. So, we get it out.
+		 * a Bundle inside the Intent extras. So, we grab it.
 		 */
 		int whiteboardId = this.getIntent().getIntExtra("whiteboard_id", 0);
 		
@@ -59,9 +62,10 @@ public class Whiteboard extends Activity implements OnClickListener {
 		
 		cookieStore = rhClient.login();
 		
-		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/" + whiteboardId;
+		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/" + whiteboardId + ".xml";
 
 		editText = (EditText) findViewById(R.id.whiteboard_content);
+		lastUpdatedText = (TextView) findViewById(R.id.whiteboard_last_updated);
 
 		saveButton = (Button) findViewById(R.id.save_whiteboard_button);
 		saveButton.setOnClickListener(this);
@@ -75,6 +79,8 @@ public class Whiteboard extends Activity implements OnClickListener {
 			dnt.execute();
 			Document dom = dnt.get();
 			String text = dom.getElementsByTagName("text").item(0).getTextContent();
+			String lastUpdatedAtInWords = dom.getElementsByTagName("last_updated_time_in_words").item(0).getTextContent();
+			lastUpdatedText.setText(lastUpdatedAtInWords);
 			editText.setText(text);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -85,7 +91,6 @@ public class Whiteboard extends Activity implements OnClickListener {
 		UpdateNoteTask unt = new UpdateNoteTask(whiteboardUrl, editText, cookieStore);
 		try {
 			unt.execute();
-			String x = unt.get();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -104,7 +109,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 			
 			// set up a request object for the passed in URL
-			HttpGet req = new HttpGet(this.url + ".xml");
+			HttpGet req = new HttpGet(this.url);
 			req.addHeader("Accept", "text/xml");
 
 			try {

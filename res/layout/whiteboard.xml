@@ -31,7 +31,7 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:id="@+id/whiteboard_last_edited"
+            android:id="@+id/whiteboard_last_updated"
             android:text="last edited at XX:XX by Joe Schmoe"
             android:layout_alignParentLeft="true"></TextView>
     </RelativeLayout>
