@@ -1,14 +1,34 @@
 package edu.brandeis.jbs.rh;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.protocol.BasicHttpContext;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 import android.app.Activity;
+import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.OrientationEventListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ActionPicker extends Activity implements OnClickListener {
+	
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
 	private Button contractButton;
@@ -18,6 +38,11 @@ public class ActionPicker extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actionpicker);
+        
+        settings = getSharedPreferences(RoommateHelperHttpClient.PREFS_FILE, MODE_PRIVATE);
+        
+        TextView user_email = (TextView)findViewById(R.id.user_email);
+        user_email.setText(settings.getString("email", ""));
         
         whiteboardsButton = (Button) findViewById(R.id.actionpicker_whiteboards_button);
         whiteboardsButton.setOnClickListener(this);
@@ -40,7 +65,6 @@ public class ActionPicker extends Activity implements OnClickListener {
     		startActivity(i);
     		break;
     	case R.id.logout_button:
-    		settings = getSharedPreferences(RoommateHelperHttpClient.PREFS_FILE, MODE_PRIVATE);
     		SharedPreferences.Editor editor = settings.edit();
     		editor.remove("email");
     		editor.remove("password");

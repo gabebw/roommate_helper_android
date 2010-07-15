@@ -8,8 +8,8 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/logout_button"
-        layout="@layout/logout_button" />
+        android:id="@+id/logout_layout"
+        layout="@layout/logout_layout" />
 
     <TableLayout
         android:layout_width="wrap_content"

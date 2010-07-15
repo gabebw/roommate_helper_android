@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/logout_layout"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+    <TextView
+        android:text="email placeholder"
+        android:id="@+id/user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
+    <Button
+        android:text="@string/logout_label"
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp" />
+</LinearLayout>
