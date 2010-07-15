@@ -30,6 +30,10 @@
             android:name=".Whiteboard"
             android:label="@string/whiteboard_title">
         </activity>
+        <activity
+            android:name=".Contract"
+            android:label="@string/contract_title">
+        </activity>
     </application>
     <uses-sdk
         android:minSdkVersion="8" />

@@ -11,6 +11,7 @@ import android.widget.Button;
 public class ActionPicker extends Activity implements OnClickListener {
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
+	private Button contractButton;
 	
     /** Called when the activity is first created. */
     @Override
@@ -20,15 +21,22 @@ public class ActionPicker extends Activity implements OnClickListener {
         
         whiteboardsButton = (Button) findViewById(R.id.actionpicker_whiteboards_button);
         whiteboardsButton.setOnClickListener(this);
+        contractButton = (Button) findViewById(R.id.contract_button);
+        contractButton.setOnClickListener(this);
         
-        View logout_button = (Button)findViewById(R.id.logout_button);
+        Button logout_button = (Button)findViewById(R.id.logout_button);
         logout_button.setOnClickListener(this);
     }
     
     public void onClick(View view) {
+    	Intent i;
     	switch(view.getId()) {
     	case R.id.actionpicker_whiteboards_button:
-    		Intent i = new Intent(ActionPicker.this, Whiteboards.class);
+    		i = new Intent(ActionPicker.this, Whiteboards.class);
+    		startActivity(i);
+    		break;
+    	case R.id.contract_button:
+    		i = new Intent(ActionPicker.this, Contract.class);
     		startActivity(i);
     		break;
     	case R.id.logout_button:
