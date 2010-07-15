@@ -19,20 +19,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 
@@ -58,6 +53,10 @@ public class Whiteboards extends ListActivity {
 	
 	public void onResume() {
 		super.onResume();
+
+		// If we don't clear, every time we resume we get N more whiteboards, where N = how many whiteboards there really are
+		whiteboards.clear();
+		
 		DownloadWhiteboardsTask dwb = new DownloadWhiteboardsTask(this);
 		try {
 			dwb.execute();
@@ -83,7 +82,7 @@ public class Whiteboards extends ListActivity {
 					} else if( nodeName.equals("id") ){
 						whiteboard.id = Integer.valueOf(whiteboardChildNode.getTextContent());
 					}
-				}	
+				}
 				whiteboards.add(whiteboard);
 			}
 			// http://developer.android.com/guide/tutorials/views/hello-listview.html
