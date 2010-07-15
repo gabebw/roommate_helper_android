@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.net.http.AndroidHttpClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,7 +26,6 @@ import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -80,7 +80,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 			Document dom = dnt.get();
 			String text = dom.getElementsByTagName("text").item(0).getTextContent();
 			String lastUpdatedAtInWords = dom.getElementsByTagName("last_updated_time_in_words").item(0).getTextContent();
-			lastUpdatedText.setText(lastUpdatedAtInWords);
+			lastUpdatedText.setText("last updated " + lastUpdatedAtInWords + " ago");
 			editText.setText(text);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -139,7 +139,7 @@ public class Whiteboard extends Activity implements OnClickListener {
 		}
 	}
 
-	private class UpdateNoteTask extends AsyncTask<Void, Void, String> {
+	private class UpdateNoteTask extends AsyncTask<Void, Void, Integer> {
 		private String whiteboardUrl;
 		private EditText editText;
 		private CookieStore cookieStore;
@@ -150,7 +150,12 @@ public class Whiteboard extends Activity implements OnClickListener {
 			this.cookieStore = cookieStore;
 		}
 
-		protected String doInBackground(Void... v) {
+		
+		/**
+		 * Returns the Integer status code result of the request (e.g. 422, or 200).
+		 * If an exception occurred, returns 1.
+		 */
+		protected Integer doInBackground(Void... v) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
 			BasicHttpContext context = new BasicHttpContext();
 			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
@@ -165,16 +170,33 @@ public class Whiteboard extends Activity implements OnClickListener {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-		
+			
 			try {
 				HttpResponse resp = client.execute(whiteboardPut, context);
-				HttpEntity entity = resp.getEntity();
-				return entity.toString();
+				client.close();
+
+				int statusCode = resp.getStatusLine().getStatusCode();
+				return statusCode;
 			} catch (IOException ioe) {
-				return "oh no!";
+				client.close();
+				return 1;
 			} finally {
 				client.close();
 			}
+		}
+		
+		protected void onPostExecute(Integer statusCode){
+			Toast toast;
+
+			if( statusCode == 200 ){
+				toast = Toast.makeText(Whiteboard.this, "Successfully updated whiteboard.", Toast.LENGTH_SHORT);
+				// A bit of a cheat, but that's OK.
+				lastUpdatedText.setText("last updated less than a minute ago");
+			} else {
+				// Probably either 422 (Unprocessable Entity) or 1 (general error)
+				toast = Toast.makeText(Whiteboard.this, "Oops! Something went wrong. Please try again.", Toast.LENGTH_LONG);
+			}
+			toast.show();
 		}
 	}
 
