@@ -20,7 +20,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
@@ -34,36 +33,47 @@ import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 public class Whiteboards extends ListActivity {
 	public static final String WHITEBOARDS_XML_URL = "https://roommate-helper.heroku.com/whiteboards.xml";
 
-	ArrayList<WhiteboardHolder> whiteboards;
+	private ArrayAdapter<WhiteboardHolder> adapter;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		whiteboards = new ArrayList<WhiteboardHolder>();
+        setContentView(R.layout.whiteboards);
+
+		ArrayList<WhiteboardHolder> whiteboards = new ArrayList<WhiteboardHolder>();
+        adapter = new ArrayAdapter<WhiteboardHolder>(this, android.R.layout.simple_list_item_1, whiteboards);
+		setListAdapter(adapter);
+        
+		// Turn on text filter so that when user begins typing, the list will be filtered
+		getListView().setTextFilterEnabled(true);
 	}
 	
 	public void onListItemClick(ListView l, View v, int position, long id){
-		WhiteboardHolder whiteboard = whiteboards.get(position);
+		WhiteboardHolder whiteboard = adapter.getItem(position);
 		Intent whiteboardIntent = new Intent(this, Whiteboard.class);
 		//Store the whiteboard ID to pass it to the Whiteboard activity
 		whiteboardIntent.putExtra("whiteboard_id", whiteboard.id);
 		startActivity(whiteboardIntent);
 	}
 	
+	@Override
 	public void onResume() {
 		super.onResume();
-
-		// If we don't clear, every time we resume we get N more whiteboards, where N = how many whiteboards there really are
-		whiteboards.clear();
 		
-		DownloadWhiteboardsTask dwb = new DownloadWhiteboardsTask(this);
+		// If we don't clear, every time we resume we get N more whiteboards, where N = how many whiteboards there really are
+		adapter.clear();
+        
+		DownloadWhiteboardsTask dwb = new DownloadWhiteboardsTask();
 		try {
 			dwb.execute();
-			Document dom = dwb.get();
+			Document dom = dwb.get();;
 			NodeList whiteboardNodes = dom.getElementsByTagName("whiteboard");
 			int numWhiteboards = whiteboardNodes.getLength();
 			
+			// Don't notify the View that we added whiteboards.
+			// Once all whiteboards are loaded, then we manually call this.
+			adapter.setNotifyOnChange(false);
 			/*
 			 * Get the name of each whiteboard and insert it into an ArrayList. Then pass that ArrayList
 			 * to an ArrayAdapter to create our ListView.
@@ -83,11 +93,10 @@ public class Whiteboards extends ListActivity {
 						whiteboard.id = Integer.valueOf(whiteboardChildNode.getTextContent());
 					}
 				}
-				whiteboards.add(whiteboard);
+				adapter.add(whiteboard);
 			}
-			// http://developer.android.com/guide/tutorials/views/hello-listview.html
-			setListAdapter(new ArrayAdapter<WhiteboardHolder>(this, android.R.layout.simple_list_item_1, whiteboards));
-			getListView().setTextFilterEnabled(true);
+			// All whiteboards are loaded, notify the View.
+			adapter.notifyDataSetChanged();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -95,12 +104,15 @@ public class Whiteboards extends ListActivity {
 
 	private class DownloadWhiteboardsTask extends AsyncTask<Void, Void, Document> {
 		private CookieStore cookieStore;
-		public DownloadWhiteboardsTask(Context whiteboardsContext){
-			RoommateHelperHttpClient rhClient = new RoommateHelperHttpClient(whiteboardsContext);
-			cookieStore = rhClient.login();
+		private RoommateHelperHttpClient rhClient;
+		
+		public DownloadWhiteboardsTask(){
+			rhClient = new RoommateHelperHttpClient(Whiteboards.this);
 		}
 		
 		protected Document doInBackground(Void... v) {
+			cookieStore = rhClient.login();
+
 			AndroidHttpClient client = AndroidHttpClient.newInstance("RoommateHelperClient");
 			BasicHttpContext context = new BasicHttpContext();
 			context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
