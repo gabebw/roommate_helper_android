@@ -47,13 +47,19 @@ public class Whiteboard extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*
+		 * The Whiteboards (plural) activity places the whiteboard id inside
+		 * a Bundle inside the Intent extras. So, we get it out.
+		 */
+		int whiteboardId = this.getIntent().getIntExtra("whiteboard_id", 0);
+		
 		setContentView(R.layout.whiteboard);
 		
 		rhClient = new RoommateHelperHttpClient(this);
 		
 		cookieStore = rhClient.login();
 		
-		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/1";
+		whiteboardUrl = "https://roommate-helper.heroku.com/whiteboards/" + whiteboardId;
 
 		editText = (EditText) findViewById(R.id.whiteboard_content);
 

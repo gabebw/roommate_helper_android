@@ -2,6 +2,7 @@ package edu.brandeis.jbs.rh;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,27 +20,40 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 import edu.brandeis.jbs.rh.RoommateHelperHttpClient;
 
-public class Whiteboards extends Activity {
+public class Whiteboards extends ListActivity {
 	public static final String WHITEBOARDS_XML_URL = "https://roommate-helper.heroku.com/whiteboards.xml";
 
-	private LinearLayout whiteboardsLayout;
-	
+	ArrayList<WhiteboardHolder> whiteboards;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whiteboards);
-		whiteboardsLayout = (LinearLayout) findViewById(R.id.whiteboards_layout);
+		whiteboards = new ArrayList<WhiteboardHolder>();
+	}
+	
+	public void onListItemClick(ListView l, View v, int position, long id){
+		WhiteboardHolder whiteboard = whiteboards.get(position);
+		Intent whiteboardIntent = new Intent(this, Whiteboard.class);
+		//Store the whiteboard ID to pass it to the Whiteboard activity
+		whiteboardIntent.putExtra("whiteboard_id", whiteboard.id);
+		startActivity(whiteboardIntent);
 	}
 	
 	public void onResume() {
@@ -52,30 +66,29 @@ public class Whiteboards extends Activity {
 			int numWhiteboards = whiteboardNodes.getLength();
 			
 			/*
-			 * For each whiteboard, insert a TextView containing the whiteboard's name
-			 * into the layout inside whiteboards.xml
+			 * Get the name of each whiteboard and insert it into an ArrayList. Then pass that ArrayList
+			 * to an ArrayAdapter to create our ListView.
 			 */
-			
-			LinearLayout.LayoutParams tlp = new LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT );
 			for( int i = 0; i < numWhiteboards; i++ ){
-				Node whiteboard = whiteboardNodes.item(i);
-				NodeList whiteboardChildNodes = whiteboard.getChildNodes();
-				String whiteboardName = "";
+				Node whiteboardNode = whiteboardNodes.item(i);
+				NodeList whiteboardChildNodes = whiteboardNode.getChildNodes();
+				WhiteboardHolder whiteboard = new WhiteboardHolder();
+				
 				// Loop through each tag inside <whiteboard> until we get to <name>
 				for( int j = 0; j < whiteboardChildNodes.getLength(); j++){
-					String nodeName = whiteboardChildNodes.item(j).getNodeName();
+					Node whiteboardChildNode = whiteboardChildNodes.item(j);
+					String nodeName = whiteboardChildNode.getNodeName();
 					if( nodeName.equals("name") ){
-						whiteboardName = whiteboardChildNodes.item(j).getTextContent();
-						break;
+						whiteboard.name = whiteboardChildNode.getTextContent();
+					} else if( nodeName.equals("id") ){
+						whiteboard.id = Integer.valueOf(whiteboardChildNode.getTextContent());
 					}
-				}
-				// Create a TextView with the whiteboard name and add it to the layout inside whiteboards.xml
-				TextView textView = new TextView(this);
-				textView.setText(whiteboardName);
-				textView.setLayoutParams(tlp);
-				whiteboardsLayout.addView(textView);
+				}	
+				whiteboards.add(whiteboard);
 			}
+			// http://developer.android.com/guide/tutorials/views/hello-listview.html
+			setListAdapter(new ArrayAdapter<WhiteboardHolder>(this, android.R.layout.simple_list_item_1, whiteboards));
+			getListView().setTextFilterEnabled(true);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -120,6 +133,20 @@ public class Whiteboards extends Activity {
 				client.close();
 			}
 			return null;
+		}
+	}
+	
+	/**
+	 * Just a little class to store the whiteboard's name and ID.
+	 * @author gabe
+	 */
+	private class WhiteboardHolder {
+		public String name;
+		public int id;
+		
+		// Provide a toString so that the ListAdapter displays the items correctly.
+		public String toString(){
+			return name;
 		}
 	}
 
