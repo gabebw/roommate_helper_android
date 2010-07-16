@@ -27,8 +27,7 @@ import android.view.OrientationEventListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ActionPicker extends Activity implements OnClickListener {
-	
+public class ActionPicker extends Activity implements OnClickListener, RoommateHelperConstants {
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
 	private Button contractButton;
@@ -39,7 +38,7 @@ public class ActionPicker extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actionpicker);
         
-        settings = getSharedPreferences(RoommateHelperHttpClient.PREFS_FILE, MODE_PRIVATE);
+        settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
         
         TextView user_email = (TextView)findViewById(R.id.user_email);
         user_email.setText(settings.getString("email", ""));

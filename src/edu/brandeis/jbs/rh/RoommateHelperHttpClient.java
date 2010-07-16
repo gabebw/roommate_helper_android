@@ -10,7 +10,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -19,13 +18,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-public class RoommateHelperHttpClient {
+public class RoommateHelperHttpClient implements RoommateHelperConstants {
 	private CookieStore cookieStore;
 	private SharedPreferences settings;
 	private String email;
 	private String password;
 
-	public static final String PREFS_FILE = "rh.settings";
 	public static final String LOGIN_URL = "https://roommate-helper.heroku.com/user_sessions";
 
 	/**
@@ -46,14 +44,13 @@ public class RoommateHelperHttpClient {
 	 */
 	public RoommateHelperHttpClient(Context context) {
 		settings = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
-
 		// Get user email and password
 		email = settings.getString("email", "");
 		password = settings.getString("password", "");
 	}
 
 	public CookieStore login() {
-		LoginTask loginTask = new LoginTask();// email, password);
+		LoginTask loginTask = new LoginTask();
 		try {
 			loginTask.execute();
 			cookieStore = loginTask.get();
@@ -62,6 +59,7 @@ public class RoommateHelperHttpClient {
 			ex.printStackTrace();
 			return null;
 		}
+
 	}
 
 	private class LoginTask extends AsyncTask<Void, Void, CookieStore> {
@@ -78,7 +76,6 @@ public class RoommateHelperHttpClient {
 			// log in (create a new user session)
 			HttpPost login = new HttpPost(LOGIN_URL);
 
-			// TERRIBLE COPY-PASTED CODE
 			try {
 				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 				nvps.add(new BasicNameValuePair("user_session[email]", email));
@@ -87,7 +84,7 @@ public class RoommateHelperHttpClient {
 				login.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			} // END OF COPY-PASTE
+			}
 
 			try {
 				HttpResponse response = httpclient.execute(login);
@@ -95,13 +92,13 @@ public class RoommateHelperHttpClient {
 				if (entity != null) {
 					entity.consumeContent();
 				}
-				cookieStore = httpclient.getCookieStore();
+				return httpclient.getCookieStore();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} finally {
 				httpclient.getConnectionManager().shutdown();
 			}
-			return cookieStore;
+			return null;
 		}
 	}
 
