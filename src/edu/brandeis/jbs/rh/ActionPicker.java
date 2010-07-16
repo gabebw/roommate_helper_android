@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ActionPicker extends Activity implements OnClickListener {
+public class ActionPicker extends Activity implements OnClickListener, RoommateHelperConstants {
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
 	
