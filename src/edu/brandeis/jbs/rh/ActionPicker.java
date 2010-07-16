@@ -1,29 +1,11 @@
 package edu.brandeis.jbs.rh;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.protocol.BasicHttpContext;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 import android.app.Activity;
-import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.OrientationEventListener;
 import android.widget.Button;
 import android.widget.TextView;
 
