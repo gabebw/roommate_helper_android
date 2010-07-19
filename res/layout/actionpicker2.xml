@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/RelativeLayout01"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logout_layout"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <TextView
+            android:text="email placeholder"
+            android:id="@+id/user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+        <Button
+            android:text="@string/logout_label"
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+        <TableRow>
+            <Button
+                android:text="@string/contract_label"
+                android:id="@+id/contract_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+            <Button
+                android:text="@string/actionpicker_whiteboards_label"
+                android:id="@+id/actionpicker_whiteboards_button"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>
