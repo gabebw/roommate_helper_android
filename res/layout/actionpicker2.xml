@@ -35,12 +35,14 @@
         <TableRow>
             <Button
                 android:text="@string/contract_label"
+                android:drawableTop="@drawable/document_sm"
                 android:id="@+id/contract_button"
                 android:layout_width="120sp"
                 android:layout_height="120sp"
                 android:layout_margin="10sp" />
             <Button
                 android:text="@string/actionpicker_whiteboards_label"
+                android:drawableTop="@drawable/whiteboard_sm"
                 android:id="@+id/actionpicker_whiteboards_button"
                 android:layout_width="120sp"
                 android:layout_height="120sp"
