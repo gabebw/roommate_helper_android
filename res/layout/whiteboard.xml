@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout01"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <EditText
-        android:text="@string/default_whiteboard_content"
-        android:id="@+id/whiteboard_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/RelativeLayout01"
-        android:gravity="top"
-        android:textSize="15sp" />
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:id="@+id/whiteboards_relative_layout"
+		android:layout_width="wrap_content">
+		<Button
+			android:id="@+id/save_whiteboard_button"
+			android:text="@string/save_whiteboard_label"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:textSize="20dip"
+			android:layout_alignParentRight="true" />
 
-    <RelativeLayout
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/RelativeLayout01"
-        android:layout_width="wrap_content">
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_below="@id/whiteboard_content"
-            android:id="@+id/save_whiteboard_button"
-            android:layout_width="wrap_content"
-            android:textSize="20dip"
-            android:text="@string/save_whiteboard_label"
-            android:layout_alignParentRight="true"></Button>
+		<TextView
+			android:id="@+id/whiteboard_last_updated"
+			android:text="last edited at XX:XX by Joe Schmoe"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentLeft="true" />
+	</RelativeLayout>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/whiteboard_last_updated"
-            android:text="last edited at XX:XX by Joe Schmoe"
-            android:layout_alignParentLeft="true"></TextView>
-    </RelativeLayout>
-
+	<EditText
+		android:id="@+id/whiteboard_content"
+		android:text="@string/default_whiteboard_content"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:textSize="15sp"
+		android:layout_below="@id/whiteboards_relative_layout"
+		android:gravity="top" />
 </RelativeLayout>
