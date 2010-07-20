@@ -48,5 +48,14 @@
                 android:layout_height="120sp"
                 android:layout_margin="10sp" />
         </TableRow>
+        <TableRow>
+			<Button
+				android:text="@string/help_label"
+				android:id="@+id/help_button"
+				android:drawableTop="@drawable/ic_menu_help"
+				android:layout_width="120sp"
+				android:layout_height="120sp"
+				android:layout_margin="10sp" />
+		</TableRow>
     </TableLayout>
 </RelativeLayout>

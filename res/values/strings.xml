@@ -15,6 +15,7 @@
     <string name="roommates_label">Roommates</string>
     <string name="calendar_label">Calendar</string>
     <string name="contract_label">Contract</string>
+    <string name="help_label">Help</string>
     
     <!--  Whiteboards (plural) -->
     <string name="select_a_whiteboard_label">Select a whiteboard</string>
