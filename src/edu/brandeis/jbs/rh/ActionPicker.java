@@ -13,6 +13,7 @@ public class ActionPicker extends Activity implements OnClickListener, RoommateH
 	private SharedPreferences settings;
 	private Button whiteboardsButton;
 	private Button contractButton;
+	private Button helpButton;
 	
     /** Called when the activity is first created. */
     @Override
@@ -29,6 +30,8 @@ public class ActionPicker extends Activity implements OnClickListener, RoommateH
         whiteboardsButton.setOnClickListener(this);
         contractButton = (Button) findViewById(R.id.contract_button);
         contractButton.setOnClickListener(this);
+        helpButton = (Button) findViewById(R.id.help_button);
+        helpButton.setOnClickListener(this);
         
         Button logout_button = (Button)findViewById(R.id.logout_button);
         logout_button.setOnClickListener(this);
@@ -44,6 +47,9 @@ public class ActionPicker extends Activity implements OnClickListener, RoommateH
     	case R.id.contract_button:
     		i = new Intent(ActionPicker.this, Contract.class);
     		startActivity(i);
+    		break;
+    	case R.id.help_button:
+    		startActivity(new Intent(ActionPicker.this, Help.class));
     		break;
     	case R.id.logout_button:
     		SharedPreferences.Editor editor = settings.edit();

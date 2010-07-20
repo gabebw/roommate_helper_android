@@ -27,4 +27,5 @@
     <string name="save_whiteboard_label">Save</string>
     
     <string name="contract_title">Contract</string>
+   	<string name="help_title">Help</string>
 </resources>
