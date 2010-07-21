@@ -79,7 +79,9 @@ public class Whiteboard extends Activity implements OnClickListener {
 			dnt.execute();
 			Document dom = dnt.get();
 			String text = dom.getElementsByTagName("text").item(0).getTextContent();
+			String whiteboardName = dom.getElementsByTagName("name").item(0).getTextContent();
 			String lastUpdatedAtInWords = dom.getElementsByTagName("last_updated_time_in_words").item(0).getTextContent();
+			setTitle(whiteboardName); // set Activity title
 			lastUpdatedText.setText("last updated " + lastUpdatedAtInWords + " ago");
 			editText.setText(text);
 		} catch (Exception ex) {
