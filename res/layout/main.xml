@@ -32,18 +32,4 @@
         android:textSize="20sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp" />
-    <!--
-    <TextView
-        android:text="@string/login_form_need_acnt"
-        android:id="@+id/login_form_need_acnt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:bufferType="spannable"></TextView>
-    <TextView
-        android:text="@string/login_form_signup"
-        android:id="@+id/login_form_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:bufferType="spannable"></TextView>
-    -->
 </LinearLayout>
