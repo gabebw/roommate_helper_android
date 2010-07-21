@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/base_layout"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_above="@+id/logout_layout"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        >
+        <TableRow>
+            <Button
+                android:text="@string/contract_label"
+                android:drawableTop="@drawable/document_sm"
+                android:id="@+id/contract_button"
+                android:layout_width="200sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+            <Button
+                android:text="@string/actionpicker_whiteboards_label"
+                android:drawableTop="@drawable/whiteboard_sm"
+                android:id="@+id/actionpicker_whiteboards_button"
+                android:layout_width="200sp"
+                android:layout_height="120sp"
+                android:layout_margin="10sp" />
+        </TableRow>
+    </TableLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90sp"
+        android:id="@+id/logout_layout"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:text="email placeholder"
+            android:id="@+id/user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_above="@+id/landscape_buttons_layout" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/landscape_buttons_layout"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:text="@string/logout_label"
+                android:id="@+id/logout_button"
+                android:layout_width="200sp"
+                android:layout_margin="10sp" 
+                android:layout_height="wrap_content" />
+            <Button
+                android:text="@string/help_label"
+                android:id="@+id/help_button"
+                android:layout_width="200sp"
+                android:layout_margin="10sp" 
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -19,7 +19,7 @@ public class ActionPicker extends Activity implements OnClickListener, RoommateH
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.actionpicker2);
+        setContentView(R.layout.actionpicker);
         
         settings = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
         
